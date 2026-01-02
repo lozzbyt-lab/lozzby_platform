@@ -1,0 +1,145 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 220 25% 97%;
+    --foreground: 220 50% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 50% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 50% 10%;
+
+    --primary: 220 70% 25%;
+    --primary-foreground: 45 100% 60%;
+
+    --secondary: 140 60% 35%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 220 20% 92%;
+    --muted-foreground: 220 15% 45%;
+
+    --accent: 45 100% 50%;
+    --accent-foreground: 220 70% 15%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 20% 88%;
+    --input: 220 20% 88%;
+    --ring: 220 70% 25%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 220 70% 20%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 45 100% 50%;
+    --sidebar-primary-foreground: 220 70% 15%;
+    --sidebar-accent: 220 60% 30%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 220 60% 35%;
+    --sidebar-ring: 45 100% 50%;
+
+    --chart-1: 220 70% 25%;
+    --chart-2: 140 60% 35%;
+    --chart-3: 45 100% 50%;
+    --chart-4: 220 50% 45%;
+    --chart-5: 140 50% 50%;
+
+    --sidebar: 220 70% 20%;
+
+    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-serif: ui-serif, Georgia, Cambria, serif;
+    --font-mono: 'Space Mono', ui-monospace, monospace;
+
+    --shadow-sm: 0 1px 2px 0 hsl(220 70% 25% / 0.05);
+    --shadow: 0 1px 3px 0 hsl(220 70% 25% / 0.1), 0 1px 2px -1px hsl(220 70% 25% / 0.1);
+    --shadow-md: 0 4px 6px -1px hsl(220 70% 25% / 0.1), 0 2px 4px -2px hsl(220 70% 25% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(220 70% 25% / 0.1), 0 4px 6px -4px hsl(220 70% 25% / 0.1);
+    --shadow-xl: 0 20px 25px -5px hsl(220 70% 25% / 0.1), 0 8px 10px -6px hsl(220 70% 25% / 0.1);
+
+    --spacing: 0.25rem;
+
+    /* FIFA inspired gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(220 70% 15%) 0%, hsl(220 70% 25%) 50%, hsl(140 60% 25%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(45 100% 45%) 0%, hsl(38 100% 55%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 25% 97%) 100%);
+  }
+
+  .dark {
+    --background: 220 50% 8%;
+    --foreground: 220 20% 95%;
+
+    --card: 220 50% 12%;
+    --card-foreground: 220 20% 95%;
+
+    --popover: 220 50% 12%;
+    --popover-foreground: 220 20% 95%;
+
+    --primary: 45 100% 50%;
+    --primary-foreground: 220 70% 10%;
+
+    --secondary: 140 60% 40%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 220 40% 18%;
+    --muted-foreground: 220 15% 60%;
+
+    --accent: 220 60% 25%;
+    --accent-foreground: 45 100% 50%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 40% 20%;
+    --input: 220 40% 20%;
+    --ring: 45 100% 50%;
+
+    --sidebar-background: 220 50% 10%;
+    --sidebar-foreground: 220 20% 95%;
+    --sidebar-primary: 45 100% 50%;
+    --sidebar-primary-foreground: 220 70% 10%;
+    --sidebar-accent: 220 50% 18%;
+    --sidebar-accent-foreground: 220 20% 95%;
+    --sidebar-border: 220 40% 20%;
+    --sidebar-ring: 45 100% 50%;
+
+    --chart-1: 45 100% 50%;
+    --chart-2: 140 60% 45%;
+    --chart-3: 220 70% 50%;
+    --chart-4: 280 60% 55%;
+    --chart-5: 20 70% 55%;
+
+    --sidebar: 220 50% 10%;
+
+    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.2);
+    --shadow: 0 1px 3px 0 hsl(0 0% 0% / 0.3), 0 1px 2px -1px hsl(0 0% 0% / 0.2);
+    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.3), 0 2px 4px -2px hsl(0 0% 0% / 0.2);
+    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.3), 0 4px 6px -4px hsl(0 0% 0% / 0.2);
+    --shadow-xl: 0 20px 25px -5px hsl(0 0% 0% / 0.3), 0 8px 10px -6px hsl(0 0% 0% / 0.2);
+
+    --gradient-hero: linear-gradient(135deg, hsl(220 50% 8%) 0%, hsl(220 60% 15%) 50%, hsl(140 50% 15%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(45 100% 45%) 0%, hsl(38 100% 55%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(220 50% 12%) 0%, hsl(220 50% 10%) 100%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
