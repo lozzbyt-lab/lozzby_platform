@@ -5,7 +5,7 @@ import { useCart } from "@/contexts/CartContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Layout } from "@/components/Layout";
+import Layout from "@/components/Layout";
 import { orderService, orderItemService } from "@/services/database";
 import { paymentService } from "@/services/payment";
 import { ArrowLeft } from "lucide-react";
