@@ -49,14 +49,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (authUser) {
         try {
-          const profile = await profileService.getById(authUser.id);
+          console.log("[AUTH] Fetching profile for user:", authUser.id);
+
+          // Add timeout to profile fetch (3 seconds)
+          const profilePromise = profileService.getById(authUser.id);
+          const profileTimeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Profile fetch timeout")), 3000)
+          );
+
+          const profile = await Promise.race([profilePromise, profileTimeoutPromise]);
+
+          console.log("[AUTH] Profile loaded successfully");
           setUser({
             ...profile,
             email: authUser.email || profile.email,
           });
         } catch (profileError) {
           console.error("Profile fetch error:", profileError);
-          setUser(null);
+          // Fallback: create a minimal user object if profile fetch fails
+          setUser({
+            id: authUser.id,
+            email: authUser.email || "",
+            role: "customer",
+            full_name: null,
+            avatar_url: null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          });
         }
       } else {
         setUser(null);
