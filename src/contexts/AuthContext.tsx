@@ -178,27 +178,55 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     password: string,
     fullName?: string
   ) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+    console.log("[AUTH] Register attempt with email:", email);
 
-    if (error) throw error;
+    if (!email || !password) {
+      throw new Error("Email and password are required");
+    }
 
-    if (data.user) {
-      // Create profile
-      const profile = await profileService.create({
-        id: data.user.id,
+    if (password.length < 6) {
+      throw new Error("Password must be at least 6 characters");
+    }
+
+    try {
+      console.log("[AUTH] Calling signUp with email:", email);
+      const { data, error } = await supabase.auth.signUp({
         email,
-        full_name: fullName || null,
-        role: "customer",
-        avatar_url: null,
+        password,
       });
 
-      setUser({
-        ...profile,
-        email: data.user.email || email,
-      });
+      if (error) {
+        console.error("[AUTH] SignUp error:", error);
+        throw error;
+      }
+
+      console.log("[AUTH] SignUp successful, user ID:", data.user?.id);
+
+      if (data.user) {
+        try {
+          // Create profile
+          console.log("[AUTH] Creating profile for user:", data.user.id);
+          const profile = await profileService.create({
+            id: data.user.id,
+            email,
+            full_name: fullName || null,
+            role: "customer",
+            avatar_url: null,
+          });
+
+          console.log("[AUTH] Profile created successfully");
+          setUser({
+            ...profile,
+            email: data.user.email || email,
+          });
+        } catch (profileError) {
+          console.error("[AUTH] Profile creation error:", profileError);
+          throw new Error("Account created but profile setup failed. Please contact support.");
+        }
+      }
+    } catch (error: any) {
+      console.error("[AUTH] Registration failed:", error.message);
+      throw error;
     }
   };
 
