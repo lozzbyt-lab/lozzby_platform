@@ -205,7 +205,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (data.user) {
         try {
-          // Create profile with timeout (5 seconds)
+          // Create profile with timeout
           console.log("[AUTH] Creating profile for user:", data.user.id);
 
           const profilePromise = profileService.create({
@@ -216,11 +216,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             avatar_url: null,
           });
 
-          const profileTimeoutPromise = new Promise((_, reject) =>
-            setTimeout(() => reject(new Error("Profile creation timeout")), 5000)
-          );
-
-          const profile = await Promise.race([profilePromise, profileTimeoutPromise]);
+          const profile = await Promise.race([
+            profilePromise,
+            new Promise((_, reject) =>
+              setTimeout(() => reject(new Error("Profile creation timeout")), 3000)
+            ),
+          ]);
 
           console.log("[AUTH] Profile created successfully");
           setUser({
