@@ -26,23 +26,20 @@ const Auth = () => {
     try {
       if (isLogin) {
         await login(formData.email, formData.password);
-        toast({ title: 'Welcome back!' });
+        toast.success('Welcome back!');
       } else {
         if (formData.password !== formData.passwordConfirmation) {
-          toast({ title: 'Passwords do not match', variant: 'destructive' });
+          toast.error('Passwords do not match');
           setIsLoading(false);
           return;
         }
         await register(formData.email, formData.password, formData.name);
-        toast({ title: 'Account created successfully!' });
+        toast.success('Account created successfully!');
       }
       navigate('/');
     } catch (error) {
-      toast({
-        title: isLogin ? 'Login failed' : 'Registration failed',
-        description: error instanceof Error ? error.message : 'An error occurred',
-        variant: 'destructive',
-      });
+      const errorMsg = error instanceof Error ? error.message : 'An error occurred';
+      toast.error(isLogin ? `Login failed: ${errorMsg}` : `Registration failed: ${errorMsg}`);
     } finally {
       setIsLoading(false);
     }
