@@ -204,15 +204,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (data.user) {
         try {
-          // Create profile
+          // Create profile with timeout (5 seconds)
           console.log("[AUTH] Creating profile for user:", data.user.id);
-          const profile = await profileService.create({
+
+          const profilePromise = profileService.create({
             id: data.user.id,
             email,
             full_name: fullName || null,
             role: "customer",
             avatar_url: null,
           });
+
+          const profileTimeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Profile creation timeout")), 5000)
+          );
+
+          const profile = await Promise.race([profilePromise, profileTimeoutPromise]);
 
           console.log("[AUTH] Profile created successfully");
           setUser({
@@ -221,7 +228,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           });
         } catch (profileError) {
           console.error("[AUTH] Profile creation error:", profileError);
-          throw new Error("Account created but profile setup failed. Please contact support.");
+          console.log("[AUTH] Using fallback after profile creation failure");
+          // Still set user even if profile creation fails
+          setUser({
+            id: data.user.id,
+            email: data.user.email || email,
+            role: "customer",
+            full_name: fullName || null,
+            avatar_url: null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          });
         }
       }
     } catch (error: any) {
