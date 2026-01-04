@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import { Product } from "@/types/database";
 import { productService } from "@/services/database";
-import { Plus, Edit2, Trash2, AlertCircle } from "lucide-react";
+import { storageService } from "@/services/storage";
+import { Plus, Edit2, Trash2, AlertCircle, Upload, X } from "lucide-react";
 import { toast } from "sonner";
 
 export default function AdminInventory() {
