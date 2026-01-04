@@ -1,32 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Star, Filter, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/Layout";
-import productJersey from "@/assets/product-jersey.jpg";
-import productBoots from "@/assets/product-boots.jpg";
-import productBall from "@/assets/product-ball.jpg";
-import productGloves from "@/assets/product-gloves.jpg";
-
-const allProducts = [
-  { id: 1, name: "Pro Team Jersey", price: 89.99, image: productJersey, rating: 4.8, category: "Jerseys" },
-  { id: 2, name: "Elite Football Boots", price: 199.99, image: productBoots, rating: 4.9, category: "Boots" },
-  { id: 3, name: "Official Match Ball", price: 149.99, image: productBall, rating: 4.7, category: "Footballs" },
-  { id: 4, name: "Pro Goalkeeper Gloves", price: 79.99, image: productGloves, rating: 4.6, category: "Accessories" },
-  { id: 5, name: "Home Kit Jersey", price: 79.99, image: productJersey, rating: 4.5, category: "Jerseys" },
-  { id: 6, name: "Speed Pro Boots", price: 169.99, image: productBoots, rating: 4.8, category: "Boots" },
-  { id: 7, name: "Training Football", price: 39.99, image: productBall, rating: 4.4, category: "Footballs" },
-  { id: 8, name: "Field Player Gloves", price: 34.99, image: productGloves, rating: 4.3, category: "Accessories" },
-];
-
-const categories = ["All", "Jerseys", "Boots", "Footballs", "Accessories"];
+import { productService } from "@/services/database";
+import { Product } from "@/types/database";
 
 const Store = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("featured");
   const [showFilters, setShowFilters] = useState(false);
+  const [categories, setCategories] = useState<string[]>(["All"]);
 
-  const filteredProducts = allProducts.filter(
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setIsLoading(true);
+        const data = await productService.getAll();
+        setProducts(data);
+
+        // Extract unique categories
+        const uniqueCategories = ["All", ...new Set(data.map((p) => p.category))];
+        setCategories(uniqueCategories);
+      } catch (error) {
+        console.error("Error loading products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, []);
+
+  const filteredProducts = products.filter(
     (product) => selectedCategory === "All" || product.category === selectedCategory
   );
 
@@ -37,7 +45,7 @@ const Store = () => {
       case "price-high":
         return b.price - a.price;
       case "rating":
-        return b.rating - a.rating;
+        return 4.7 - 4.7; // All have same rating in DB
       default:
         return 0;
     }
