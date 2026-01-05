@@ -6,6 +6,7 @@ import {
   UserMembership,
   InventoryLog,
   Profile,
+  PaymentOption,
 } from "@/types/database";
 
 // ===== PRODUCTS =====
