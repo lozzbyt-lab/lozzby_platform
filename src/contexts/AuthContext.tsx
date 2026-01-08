@@ -5,10 +5,12 @@ import {
   useEffect,
   ReactNode,
   useCallback,
+  useRef,
 } from "react";
 import { supabase } from "@/lib/supabase";
 import { profileService } from "@/services/database";
 import { Profile } from "@/types/database";
+import { useNavigate } from "react-router-dom";
 
 export interface User extends Profile {
   email: string;
@@ -30,9 +32,15 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Session timeout configuration (30 minutes of inactivity)
+const SESSION_TIMEOUT_MS = 30 * 60 * 1000;
+const SESSION_WARNING_MS = 25 * 60 * 1000;
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const warningTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const fetchProfileWithTimeout = useCallback(async (userId: string, timeoutMs = 8000) => {
     try {
