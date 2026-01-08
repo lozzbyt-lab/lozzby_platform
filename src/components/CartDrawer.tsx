@@ -87,7 +87,15 @@ const CartDrawer = () => {
         ) : (
           <>
             <div className="flex-1 overflow-y-auto py-4 space-y-3">
-              {items.map((item) => (
+              {isLoadingProducts && (
+                <div className="flex items-center justify-center py-4">
+                  <div className="text-center">
+                    <div className="inline-block mb-2 h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600" />
+                    <p className="text-xs text-muted-foreground">Updating prices...</p>
+                  </div>
+                </div>
+              )}
+              {(updatedItems.length > 0 ? updatedItems : items).map((item) => (
                 <div
                   key={item.id}
                   className="flex gap-3 p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors duration-200 animate-in slide-in-from-right"
@@ -145,7 +153,12 @@ const CartDrawer = () => {
             <div className="border-t border-border pt-4 space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span className="text-2xl font-bold text-foreground">₹{total.toFixed(2)}</span>
+                <span className="text-2xl font-bold text-foreground">
+                  ₹{(updatedItems.length > 0
+                    ? updatedItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
+                    : total
+                  ).toFixed(2)}
+                </span>
               </div>
 
               <Button
