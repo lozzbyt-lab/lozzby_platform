@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Minus, Plus, ShoppingBag, Trash2, X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
@@ -9,11 +9,53 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import { Link, useNavigate } from 'react-router-dom';
+import { productService } from '@/services/database';
 
 const CartDrawer = () => {
   const navigate = useNavigate();
   const { items, itemCount, total, isOpen, setIsOpen, removeItem, updateQuantity, clearCart } = useCart();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [updatedItems, setUpdatedItems] = useState<any[]>([]);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(false);
+
+  // Fetch fresh product data when cart drawer opens
+  useEffect(() => {
+    if (isOpen && items.length > 0) {
+      loadFreshProductData();
+    }
+  }, [isOpen, items]);
+
+  const loadFreshProductData = async () => {
+    try {
+      setIsLoadingProducts(true);
+      const itemsWithFreshData = await Promise.all(
+        items.map(async (item) => {
+          try {
+            const freshProduct = await productService.getById(item.product.id);
+            return {
+              ...item,
+              product: {
+                ...item.product,
+                name: freshProduct.name,
+                price: freshProduct.price,
+                description: freshProduct.description,
+                image: freshProduct.image_url || item.product.image,
+              },
+            };
+          } catch (error) {
+            console.error(`Failed to load fresh data for product ${item.product.id}:`, error);
+            return item; // Fallback to cached data if fetch fails
+          }
+        })
+      );
+      setUpdatedItems(itemsWithFreshData);
+    } catch (error) {
+      console.error('Error loading fresh product data:', error);
+      setUpdatedItems(items);
+    } finally {
+      setIsLoadingProducts(false);
+    }
+  };
 
   const handleProceedCheckout = () => {
     setIsCheckingOut(true);
