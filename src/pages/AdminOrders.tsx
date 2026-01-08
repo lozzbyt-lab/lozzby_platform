@@ -63,14 +63,21 @@ export default function AdminOrders() {
     setFilteredOrders(filtered);
   };
 
-  const updateOrderStatus = async (orderId: number, newStatus: Order["status"]) => {
+  const updateOrderStatus = async (orderId: number, newStatus: Order["status"], comment?: string) => {
     try {
-      await orderService.updateStatus(orderId, newStatus);
+      setIsUpdatingStatus(true);
+      await orderService.update(orderId, {
+        status: newStatus,
+        status_comment: comment || null,
+      });
       toast.success("Order status updated successfully");
+      setStatusComment("");
       loadOrders();
     } catch (error) {
       console.error("Error updating order:", error);
       toast.error("Failed to update order status");
+    } finally {
+      setIsUpdatingStatus(false);
     }
   };
 
