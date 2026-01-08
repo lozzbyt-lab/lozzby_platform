@@ -108,8 +108,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             resetInactivityTimer();
           }
         } catch (profileError) {
-          console.error("[AUTH] Profile fetch error:", profileError);
-          console.log("[AUTH] Using fallback user object due to profile fetch failure");
+          const errorMsg = profileError instanceof Error ? profileError.message : String(profileError);
+          console.warn("[AUTH] Profile fetch error (using fallback):", errorMsg);
           // Fallback: create a minimal user object if profile fetch fails
           const fallbackUser = {
             id: authUser.id,
@@ -131,7 +131,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(null);
       }
     } catch (error) {
-      console.error("[AUTH] Auth check error:", error);
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      console.error("[AUTH] Auth check error:", errorMsg);
       setUser(null);
     } finally {
       setIsLoading(false);
