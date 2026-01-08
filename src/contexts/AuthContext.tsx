@@ -302,8 +302,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             email: data.user.email || email,
           });
         } catch (profileError) {
-          console.error("[AUTH] Profile creation error:", profileError);
-          console.log("[AUTH] Using fallback after profile creation failure");
+          const errorMsg = profileError instanceof Error ? profileError.message : String(profileError);
+          console.warn("[AUTH] Profile creation error (using fallback):", errorMsg);
           // Still set user even if profile creation fails
           setUser({
             id: data.user.id,
