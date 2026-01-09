@@ -150,7 +150,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (session?.user) {
         try {
           console.log("[AUTH] Fetching profile for user:", session.user.id);
-          const profile = await fetchProfileWithTimeout(session.user.id, 15000);
+          const profile = await fetchProfileWithTimeout(session.user.id, 30000);
 
           console.log("[AUTH] Profile loaded:", profile);
           const newUser = {
@@ -219,7 +219,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (data.user) {
         try {
           console.log("[AUTH] Fetching profile for user:", data.user.id);
-          const profile = await fetchProfileWithTimeout(data.user.id, 15000);
+          const profile = await fetchProfileWithTimeout(data.user.id, 30000);
 
           console.log("[AUTH] Profile fetched:", profile);
           setUser({
@@ -292,7 +292,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           const profile = await Promise.race([
             profilePromise,
             new Promise<never>((_, reject) =>
-              setTimeout(() => reject(new Error("Profile creation timeout")), 15000)
+              setTimeout(() => reject(new Error("Profile creation timeout")), 30000)
             ),
           ]);
 
