@@ -9,6 +9,11 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
+    server: {
+    allowedHosts: [
+      'jpskating.onrender.com'
+    ]
+  },
   plugins: [react(), mode === "production" && componentTagger()].filter(Boolean),
   resolve: {
     alias: {
@@ -16,10 +21,3 @@ export default defineConfig(({ mode }) => ({
     },
   },
 }));
-export default {
-  server: {
-    allowedHosts: [
-      'jpskating.onrender.com'
-    ]
-  }
-};
