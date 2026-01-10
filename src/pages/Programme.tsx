@@ -201,11 +201,9 @@ const Programme = () => {
                       variant={tier.highlighted ? "gold" : "outline"}
                       className="w-full mb-8"
                       size="lg"
-                      asChild
+                      onClick={() => handleAddToCart(tier)}
                     >
-                      <Link to="/store" className="flex items-center justify-center gap-2">
-                        Get Started <ArrowRight className="w-4 h-4" />
-                      </Link>
+                      Add to Cart <ArrowRight className="w-4 h-4" />
                     </Button>
 
                     {/* Benefits List */}
