@@ -215,7 +215,7 @@ const Programme = () => {
         <div className="container mx-auto text-center max-w-2xl">
           <h2 className="text-3xl font-bold mb-4">Ready to Join?</h2>
           <p className="text-muted-foreground mb-8">
-            Start enjoying exclusive benefits and become part of the JP Skating community today.
+            Start enjoying exclusive benefits and become part of the Skating community today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button variant="gold" size="lg" asChild>
