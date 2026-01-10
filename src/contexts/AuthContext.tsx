@@ -143,6 +143,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [fetchProfileWithTimeout, resetInactivityTimer]);
 
   useEffect(() => {
+    // Initialize auth check
+    console.log("[AUTH] Initializing auth check...");
     checkAuth();
 
     // Listen for auth changes
