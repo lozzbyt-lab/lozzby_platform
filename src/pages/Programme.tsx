@@ -1,67 +1,23 @@
-import { Check, Gift, Users, Trophy, Zap, Star, Flame, Crown, ArrowRight } from 'lucide-react';
+import { Check, Gift, Users, Trophy, Zap, Star, Flame, Crown, ArrowRight, Heart, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Layout from '@/components/Layout';
 import { Link } from 'react-router-dom';
 import { useCart } from '@/contexts/CartContext';
+import { membershipService } from '@/services/database';
+import { useEffect, useState } from 'react';
+import { Membership } from '@/types/database';
+import { toast } from 'sonner';
 
-const membershipTiers = [
-  {
-    name: "Silver",
-    icon: Star,
-    price: 49,
-    period: "per year",
-    description: "Perfect for casual skaters",
-    benefits: [
-      "10% discount on all products",
-      "Early access to new products",
-      "Monthly newsletter with tips",
-      "Exclusive member events",
-      "Birthday bonus discount",
-      "Free shipping on orders over $50"
-    ],
-    color: "silver",
-    highlighted: false
-  },
-  {
-    name: "Gold",
-    icon: Crown,
-    price: 99,
-    period: "per year",
-    description: "For dedicated skaters",
-    benefits: [
-      "20% discount on all products",
-      "Priority customer support",
-      "Free shipping on all orders",
-      "Exclusive member-only sales",
-      "Birthday bonus discount",
-      "Quarterly exclusive item drops",
-      "Points system (1 point per $1)",
-      "VIP event invitations"
-    ],
-    color: "gold",
-    highlighted: true
-  },
-  {
-    name: "Platinum",
-    icon: Flame,
-    price: 199,
-    period: "per year",
-    description: "For serious competitors",
-    benefits: [
-      "30% discount on all products",
-      "24/7 priority support",
-      "Free express shipping",
-      "First access to new releases",
-      "Birthday bonus discount",
-      "Monthly exclusive items",
-      "Points system (2 points per $1)",
-      "Personal shopping assistant",
-      "Complimentary product training"
-    ],
-    color: "platinum",
-    highlighted: false
-  }
-];
+const iconMap: Record<string, any> = {
+  Star,
+  Crown,
+  Flame,
+  Zap,
+  Gift,
+  Trophy,
+  Heart,
+  Award,
+};
 
 const features = [
   {
