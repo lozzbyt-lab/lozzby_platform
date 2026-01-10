@@ -58,12 +58,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // You can add a toast notification here if needed
     }, SESSION_WARNING_MS);
 
-    // Set logout timer
-    inactivityTimerRef.current = setTimeout(async () => {
-      console.log("[AUTH] Logging out due to inactivity");
-      await supabase.auth.signOut();
-      setUser(null);
-    }, SESSION_TIMEOUT_MS);
+    // Set logout timer - DISABLED to prevent unwanted logouts
+    // Users will only be logged out if their session expires server-side
+    // inactivityTimerRef.current = setTimeout(async () => {
+    //   console.log("[AUTH] Logging out due to inactivity");
+    //   await supabase.auth.signOut();
+    //   setUser(null);
+    // }, SESSION_TIMEOUT_MS);
   }, []);
 
   const handleUserActivity = useCallback(() => {
