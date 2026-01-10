@@ -109,7 +109,7 @@ const About = () => {
               Our Values
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              These principles guide everything we do at JP Skating Club.
+              These principles guide everything we do at Skating.
             </p>
           </div>
 
