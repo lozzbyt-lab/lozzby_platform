@@ -44,18 +44,39 @@ const features = [
 
 const Programme = () => {
   const { addItem } = useCart();
+  const [memberships, setMemberships] = useState<Membership[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleAddToCart = (tier: typeof membershipTiers[0]) => {
+  useEffect(() => {
+    const loadMemberships = async () => {
+      try {
+        setIsLoading(true);
+        const data = await membershipService.getAll();
+        setMemberships(data);
+      } catch (error) {
+        console.error("Error loading memberships:", error);
+        toast.error("Failed to load memberships");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadMemberships();
+  }, []);
+
+  const handleAddToCart = (membership: Membership) => {
     addItem(
       {
-        id: membershipTiers.indexOf(tier) + 1000, // Use unique IDs for memberships
-        name: `${tier.name} Membership`,
-        price: tier.price,
+        id: 1000 + membership.id, // Use unique IDs for memberships
+        name: `${membership.name} Membership`,
+        price: membership.price,
         image: 'https://images.unsplash.com/photo-1556821552-5ff41cf930b2?w=400&h=400&fit=crop',
         category: 'Membership',
+        membershipId: membership.id, // Store membership ID for later processing
       },
       1
     );
+    toast.success(`${membership.name} membership added to cart!`);
   };
 
   return (
