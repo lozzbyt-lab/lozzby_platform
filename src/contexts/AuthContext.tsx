@@ -52,11 +52,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       clearTimeout(warningTimerRef.current);
     }
 
-    // Set warning timer (show warning 5 minutes before logout)
-    warningTimerRef.current = setTimeout(() => {
-      console.log("[AUTH] Session about to expire due to inactivity");
-      // You can add a toast notification here if needed
-    }, SESSION_WARNING_MS);
+    // Set warning timer - DISABLED since logout is disabled
+    // warningTimerRef.current = setTimeout(() => {
+    //   console.log("[AUTH] Session about to expire due to inactivity");
+    //   // You can add a toast notification here if needed
+    // }, SESSION_WARNING_MS);
 
     // Set logout timer - DISABLED to prevent unwanted logouts
     // Users will only be logged out if their session expires server-side
