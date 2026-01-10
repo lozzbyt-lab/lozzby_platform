@@ -8,24 +8,41 @@ console.log("[SUPABASE] URL:", supabaseUrl);
 console.log("[SUPABASE] Key loaded:", !!supabaseAnonKey);
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error("Missing Supabase environment variables");
+  console.error("[SUPABASE] ERROR: Missing environment variables");
+  console.error("[SUPABASE] VITE_SUPABASE_URL:", supabaseUrl ? "✓" : "✗ Missing");
+  console.error("[SUPABASE] VITE_SUPABASE_ANON_KEY:", supabaseAnonKey ? "✓" : "✗ Missing");
+  throw new Error(
+    `Missing Supabase environment variables. URL: ${!!supabaseUrl}, Key: ${!!supabaseAnonKey}`
+  );
 }
 
 if (!supabaseUrl.startsWith("https://")) {
   console.error("[SUPABASE] Invalid URL format:", supabaseUrl);
+  throw new Error(`Invalid Supabase URL format: ${supabaseUrl}`);
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-    storage: localStorage,
-    storageKey: 'sb-auth-token',
-    detectSessionInUrl: true,
-  },
-});
+try {
+  export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      storage: localStorage,
+      storageKey: 'sb-auth-token',
+      detectSessionInUrl: true,
+    },
+    global: {
+      headers: {
+        "X-Client-Info": "supabase-js/web",
+      },
+    },
+  });
 
-console.log("[SUPABASE] Client initialized successfully");
+  console.log("[SUPABASE] Client initialized successfully");
+  console.log("[SUPABASE] Base URL:", supabaseUrl);
+} catch (error) {
+  console.error("[SUPABASE] Failed to create client:", error);
+  throw new Error(`Failed to initialize Supabase client: ${String(error)}`);
+}
 
 // Test connectivity
 export async function testSupabaseConnection() {
