@@ -238,21 +238,73 @@ export default function AdminMemberships() {
                   />
                 </div>
 
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">
+                      Duration (Days) *
+                    </label>
+                    <Input
+                      type="number"
+                      value={formData.duration_days}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          duration_days: parseInt(e.target.value),
+                        })
+                      }
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Icon *</label>
+                    <select
+                      value={formData.icon}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          icon: e.target.value,
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      {iconOptions.map((option) => (
+                        <option key={option.name} value={option.name}>
+                          {option.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">
-                    Duration (Days) *
-                  </label>
-                  <Input
-                    type="number"
-                    value={formData.duration_days}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        duration_days: parseInt(e.target.value),
-                      })
-                    }
-                    required
-                  />
+                  <label className="text-sm font-medium">Color Theme *</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {colorOptions.map((option) => (
+                      <button
+                        key={option.name}
+                        type="button"
+                        onClick={() =>
+                          setFormData({
+                            ...formData,
+                            color: option.name,
+                          })
+                        }
+                        className={`p-3 rounded-lg border-2 transition-all ${
+                          formData.color === option.name
+                            ? "border-blue-600 ring-2 ring-blue-500"
+                            : "border-gray-300"
+                        }`}
+                      >
+                        <div
+                          className="w-8 h-8 rounded mx-auto mb-1"
+                          style={{ backgroundColor: option.hex }}
+                        />
+                        <span className="text-xs font-medium block">
+                          {option.label}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="space-y-2">
