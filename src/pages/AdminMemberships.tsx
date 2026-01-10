@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Membership } from "@/types/database";
 import { membershipService } from "@/services/database";
-import { Plus, Edit2, Trash2 } from "lucide-react";
+import { Plus, Edit2, Trash2, Star, Crown, Flame, Zap, Gift, Trophy, Heart, Award } from "lucide-react";
 import { toast } from "sonner";
 
 export default function AdminMemberships() {
