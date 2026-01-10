@@ -72,7 +72,7 @@ const About = () => {
               </h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
-                  JP Skating Club started in 2020 with a simple mission: make professional-grade 
+                  Skating started in 2020 with a simple mission: make professional-grade
                   ice skating equipment accessible to everyone who loves the sport.
                 </p>
                 <p>
