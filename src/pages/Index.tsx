@@ -323,7 +323,7 @@ const Index = () => {
             {/* Right Side - Membership Tiers Preview */}
             <div className="grid grid-cols-1 gap-6">
               {/* Silver Tier */}
-              <div className="rounded-xl border border-border bg-card hover:shadow-lg transition-shadow p-6">
+              <Link to="/programme" className="rounded-xl border border-border bg-card hover:shadow-lg transition-shadow p-6 hover:-translate-y-1 transition-all duration-300 cursor-pointer block">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center">
                     <Star className="w-6 h-6 text-gray-400" />
@@ -347,10 +347,10 @@ const Index = () => {
                     <span>Free shipping over $50</span>
                   </li>
                 </ul>
-              </div>
+              </Link>
 
               {/* Gold Tier - Highlighted */}
-              <div className="rounded-xl border-2 border-accent bg-accent/5 hover:shadow-xl transition-shadow p-6 relative">
+              <Link to="/programme" className="rounded-xl border-2 border-accent bg-accent/5 hover:shadow-xl transition-shadow p-6 relative hover:-translate-y-1 transition-all duration-300 cursor-pointer block">
                 <div className="absolute -top-3 left-4 bg-accent text-accent-foreground text-xs font-bold px-3 py-1 rounded-full">
                   ⭐ POPULAR
                 </div>
@@ -377,10 +377,10 @@ const Index = () => {
                     <span>Priority customer support</span>
                   </li>
                 </ul>
-              </div>
+              </Link>
 
               {/* Platinum Tier */}
-              <div className="rounded-xl border border-border bg-card hover:shadow-lg transition-shadow p-6">
+              <Link to="/programme" className="rounded-xl border border-border bg-card hover:shadow-lg transition-shadow p-6 hover:-translate-y-1 transition-all duration-300 cursor-pointer block">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-lg bg-orange-200 flex items-center justify-center">
                     <Trophy className="w-6 h-6 text-orange-600" />
@@ -404,7 +404,7 @@ const Index = () => {
                     <span>Personal shopping assistant</span>
                   </li>
                 </ul>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
