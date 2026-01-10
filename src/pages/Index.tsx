@@ -3,8 +3,9 @@ import { ArrowRight, Star, Truck, Shield, Clock, Trophy, Users, Award, Quote, Ch
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/Layout";
 import heroImage from "@/assets/hero-stadium.jpg";
-import { allProducts } from "@/data/products";
-const featuredProducts = allProducts.slice(0, 4);
+import { useEffect, useState } from "react";
+import { productService } from "@/services/database";
+import type { Product } from "@/types/database";
 const features = [{
   icon: Truck,
   title: "Free Shipping",
