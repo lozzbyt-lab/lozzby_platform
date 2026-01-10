@@ -27,6 +27,64 @@ export interface PaymentResponse {
   data?: any;
 }
 
+// Helper function to extract and process memberships from order
+const processMembershipsForOrder = async (orderId: number, userId: string | null) => {
+  if (!userId) return;
+
+  try {
+    // Fetch the order to get membership details
+    const { data: order } = await supabase
+      .from("orders")
+      .select("*")
+      .eq("id", orderId)
+      .single();
+
+    if (!order || !order.notes) return;
+
+    // Parse membership IDs from order notes
+    // Format: "MEMBERSHIPS:[1,2,3]|other notes"
+    const membershipMatch = order.notes.match(/MEMBERSHIPS:(\[[\d,]*\])/);
+    if (!membershipMatch) return;
+
+    const membershipIds = JSON.parse(membershipMatch[1]) as number[];
+
+    // Create user_membership records for each membership
+    const now = new Date();
+    for (const membershipId of membershipIds) {
+      try {
+        // Get membership details to know duration
+        const membership = await membershipService.getById(membershipId);
+
+        if (membership) {
+          // Calculate end date
+          const endDate = new Date(now);
+          endDate.setDate(endDate.getDate() + membership.duration_days);
+
+          // Create user membership
+          await userMembershipService.create({
+            user_id: userId,
+            membership_id: membershipId,
+            start_date: now.toISOString(),
+            end_date: endDate.toISOString(),
+            is_active: true,
+          });
+
+          console.log(
+            `[PAYMENT] Created user_membership for user ${userId}, membership ${membershipId}`
+          );
+        }
+      } catch (error) {
+        console.error(
+          `[PAYMENT] Failed to create membership ${membershipId} for user ${userId}:`,
+          error
+        );
+      }
+    }
+  } catch (error) {
+    console.error("[PAYMENT] Failed to process memberships:", error);
+  }
+};
+
 // Generate SHA512 hash for PayU
 const generateHash = async (
   txnid: string,
