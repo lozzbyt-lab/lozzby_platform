@@ -292,14 +292,14 @@ const MembershipCard = ({
           )}
 
           {/* Action Buttons */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2 sm:gap-3">
             <Button
               variant="outline"
               size="sm"
-              className="gap-2"
+              className="gap-1 sm:gap-2 text-xs sm:text-sm transition-colors"
               onClick={handleCopyMembershidId}
             >
-              <Copy className="w-4 h-4" />
+              <Copy className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">Copy ID</span>
               <span className="sm:hidden">ID</span>
             </Button>
@@ -307,10 +307,10 @@ const MembershipCard = ({
             <Button
               variant="outline"
               size="sm"
-              className="gap-2"
+              className="gap-1 sm:gap-2 text-xs sm:text-sm transition-colors"
               onClick={handleShare}
             >
-              <Share2 className="w-4 h-4" />
+              <Share2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">Share</span>
               <span className="sm:hidden">Share</span>
             </Button>
@@ -318,13 +318,13 @@ const MembershipCard = ({
             {isActive && onRenew && (
               <Button
                 size="sm"
-                className="col-span-2 gap-2 bg-gradient-to-r"
+                className="col-span-2 gap-1 sm:gap-2 text-xs sm:text-sm bg-gradient-to-r transition-all duration-300"
                 style={{
                   backgroundImage: `linear-gradient(135deg, ${color}, ${color}dd)`,
                 }}
                 onClick={onRenew}
               >
-                <Crown className="w-4 h-4" />
+                <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 Renew Membership
               </Button>
             )}
@@ -332,19 +332,24 @@ const MembershipCard = ({
             {!isActive && onRenew && (
               <Button
                 size="sm"
-                className="col-span-2 gap-2 bg-gradient-to-r"
+                className="col-span-2 gap-1 sm:gap-2 text-xs sm:text-sm bg-gradient-to-r transition-all duration-300"
                 style={{
                   backgroundImage: `linear-gradient(135deg, ${color}, ${color}dd)`,
                 }}
                 onClick={onRenew}
               >
-                <Crown className="w-4 h-4" />
+                <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 Reactivate Membership
               </Button>
             )}
 
             {onManage && (
-              <Button variant="ghost" size="sm" className="col-span-2" onClick={onManage}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="col-span-2 text-xs sm:text-sm transition-colors"
+                onClick={onManage}
+              >
                 Manage Settings
               </Button>
             )}
@@ -353,7 +358,7 @@ const MembershipCard = ({
 
         {/* Decorative corner accent */}
         <div
-          className="absolute top-0 right-0 w-20 h-20 opacity-10"
+          className="absolute top-0 right-0 w-16 sm:w-20 h-16 sm:h-20 opacity-5"
           style={{
             background: `radial-gradient(circle, ${color}, transparent)`,
           }}
