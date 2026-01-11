@@ -221,14 +221,14 @@ const MembershipCard = ({
           )}
 
           {/* Dates */}
-          <div className="bg-white/50 rounded-lg p-4 mb-6 backdrop-blur-sm">
-            <div className="grid grid-cols-2 gap-4">
+          <div className="bg-white/50 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 backdrop-blur-sm">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div>
                 <p className="text-xs text-gray-600 uppercase font-semibold mb-1">
                   Start Date
                 </p>
-                <p className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
+                <p className="text-xs sm:text-sm font-semibold text-gray-900 flex items-center gap-2">
+                  <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   {startDate.toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "short",
@@ -240,8 +240,8 @@ const MembershipCard = ({
                 <p className="text-xs text-gray-600 uppercase font-semibold mb-1">
                   Expiry Date
                 </p>
-                <p className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
+                <p className="text-xs sm:text-sm font-semibold text-gray-900 flex items-center gap-2">
+                  <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   {endDate.toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "short",
@@ -254,28 +254,28 @@ const MembershipCard = ({
 
           {/* Benefits Section */}
           {membership.benefits && (membership.benefits as any)?.list?.length > 0 && (
-            <div className="mb-6">
+            <div className="mb-4 sm:mb-6">
               <button
                 onClick={() => setShowBenefits(!showBenefits)}
-                className="w-full flex items-center justify-between p-3 bg-white/50 rounded-lg hover:bg-white/70 transition-colors"
+                className="w-full flex items-center justify-between p-3 bg-white/50 rounded-lg transition-colors"
               >
-                <span className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                <span className="text-xs sm:text-sm font-semibold text-gray-900 flex items-center gap-2">
                   <Gift className="w-4 h-4" />
                   Benefits & Perks
                 </span>
-                <span className={`transition-transform ${showBenefits ? "rotate-180" : ""}`}>
+                <span className={`transition-transform duration-300 ${showBenefits ? "rotate-180" : ""}`}>
                   ▼
                 </span>
               </button>
 
               {showBenefits && (
-                <div className="mt-3 p-4 bg-white/40 rounded-lg backdrop-blur-sm">
-                  <ul className="space-y-3">
+                <div className="mt-3 p-3 sm:p-4 bg-white/40 rounded-lg backdrop-blur-sm">
+                  <ul className="space-y-2 sm:space-y-3">
                     {(membership.benefits as any).list.map(
                       (benefit: string, index: number) => (
                         <li
                           key={index}
-                          className="flex gap-3 items-start text-sm text-gray-700"
+                          className="flex gap-3 items-start text-xs sm:text-sm text-gray-700"
                         >
                           <span
                             className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
