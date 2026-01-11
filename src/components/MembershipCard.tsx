@@ -88,18 +88,18 @@ const MembershipCard = ({
   const membershipNumber = String(userMembership.id).padStart(6, "0");
 
   return (
-    <div className="group perspective">
+    <div className="perspective">
       {/* Main Card */}
       <div
-        className={`relative rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl ${
+        className={`relative rounded-xl sm:rounded-2xl overflow-hidden transition-all duration-300 ${
           isActive
             ? `bg-gradient-to-br ${gradientClass} border-2 border-green-200`
             : "bg-gradient-to-br from-gray-100 to-gray-50 border-2 border-gray-300"
         }`}
         style={{
           boxShadow: isActive
-            ? `0 10px 30px ${color}30, 0 0 20px ${color}10`
-            : undefined,
+            ? `0 8px 20px ${color}25`
+            : "0 2px 8px rgba(0, 0, 0, 0.08)",
         }}
       >
         {/* Background Pattern */}
@@ -112,17 +112,6 @@ const MembershipCard = ({
             }}
           />
         </div>
-
-        {/* Animated Border Glow */}
-        {isActive && (
-          <div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-            style={{
-              background: `conic-gradient(${color}, transparent)`,
-              borderRadius: "1rem",
-            }}
-          />
-        )}
 
         <div className="relative p-6 sm:p-8">
           {/* Status Badge */}
