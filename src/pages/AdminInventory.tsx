@@ -95,14 +95,37 @@ export default function AdminInventory() {
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      setSelectedFiles((prev) => [...prev, ...files]);
+
+      // Generate preview URLs
+      files.forEach((file) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreviewUrls((prev) => [...prev, reader.result as string]);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  };
+
+  const removeImage = (indexToRemove: number, isNewFile: boolean) => {
+    if (isNewFile) {
+      // Remove from newly selected files
+      const newFilesIndex = previewUrls.length - selectedFiles.length;
+      if (indexToRemove >= newFilesIndex) {
+        const selectedFileIndex = indexToRemove - newFilesIndex;
+        setSelectedFiles((prev) => prev.filter((_, idx) => idx !== selectedFileIndex));
+        setPreviewUrls((prev) => prev.filter((_, idx) => idx !== indexToRemove));
+      }
+    } else {
+      // Remove from existing images
+      setFormData((prev) => ({
+        ...prev,
+        images: prev.images?.filter((_, idx) => idx !== indexToRemove) || [],
+      }));
+      setPreviewUrls((prev) => prev.filter((_, idx) => idx !== indexToRemove));
     }
   };
 
