@@ -331,12 +331,16 @@ export const userMembershipService = {
       .from("user_memberships")
       .select(`
         *,
-        memberships(*),
-        profiles(id, email, full_name, avatar_url, created_at)
+        membership:membership_id(*),
+        profile:user_id(id, email, full_name, avatar_url, created_at)
       `)
       .order("created_at", { ascending: false });
     if (error) throw error;
-    return data as any[];
+    return (data || []).map((item: any) => ({
+      ...item,
+      membership: item.membership || null,
+      profile: item.profile || null,
+    })) as any[];
   },
 
   async getActiveSubscribers() {
@@ -345,14 +349,18 @@ export const userMembershipService = {
       .from("user_memberships")
       .select(`
         *,
-        memberships(*),
-        profiles(id, email, full_name, avatar_url, created_at)
+        membership:membership_id(*),
+        profile:user_id(id, email, full_name, avatar_url, created_at)
       `)
       .eq("is_active", true)
       .gte("end_date", now)
       .order("created_at", { ascending: false });
     if (error) throw error;
-    return data as any[];
+    return (data || []).map((item: any) => ({
+      ...item,
+      membership: item.membership || null,
+      profile: item.profile || null,
+    })) as any[];
   },
 };
 
