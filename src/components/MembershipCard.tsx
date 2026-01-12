@@ -371,7 +371,22 @@ const MembershipCard = ({
               </Button>
             )}
 
-            {!isActive && onRenew && (
+            {isQueued && (
+              <Button
+                size="sm"
+                variant="outline"
+                disabled
+                className="col-span-2 gap-1 sm:gap-2 text-xs sm:text-sm"
+              >
+                <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                Queued for {nextActivationDate?.toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                })}
+              </Button>
+            )}
+
+            {!isActive && !isQueued && onRenew && (
               <Button
                 size="sm"
                 className="col-span-2 gap-1 sm:gap-2 text-xs sm:text-sm bg-gradient-to-r transition-all duration-300"
