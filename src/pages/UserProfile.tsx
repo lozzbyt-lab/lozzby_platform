@@ -48,7 +48,7 @@ export default function UserProfile() {
       setIsLoading(true);
       if (user?.id) {
         console.log(`[PROFILE] Loading memberships for user ${user.id}...`);
-        const data = await userMembershipService.getByUserId(user.id);
+        const data = await userMembershipService.getUserMembershipsWithQueue(user.id);
         console.log(`[PROFILE] Loaded ${data.length} memberships:`, data);
 
         // Filter and map memberships to ensure proper structure
