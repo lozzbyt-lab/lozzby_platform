@@ -170,6 +170,12 @@ const Navbar = () => {
                 {isAuthenticated ? (
                   <>
                     <Button variant="outline" className="w-full" asChild>
+                      <Link to="/profile" onClick={() => setIsOpen(false)}>
+                        <User className="w-4 h-4 mr-2" />
+                        My Profile
+                      </Link>
+                    </Button>
+                    <Button variant="outline" className="w-full" asChild>
                       <Link to="/orders" onClick={() => setIsOpen(false)}>
                         <Package className="w-4 h-4 mr-2" />
                         My Orders

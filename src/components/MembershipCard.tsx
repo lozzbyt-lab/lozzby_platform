@@ -5,7 +5,11 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 interface MembershipCardProps {
-  userMembership: UserMembership & { membership: Membership | null };
+  userMembership: (UserMembership & { membership: Membership | null }) & {
+    status?: "active" | "expired" | "pending" | "queued";
+    queuePosition?: number | null;
+    nextActivationDate?: string | null;
+  };
   onRenew?: () => void;
   onManage?: () => void;
 }
@@ -59,7 +63,13 @@ const MembershipCard = ({
   const startDate = new Date(userMembership.start_date);
   const endDate = new Date(userMembership.end_date);
   const now = new Date();
-  const isActive = userMembership.is_active && now <= endDate;
+
+  // Use status from queue processing if available, otherwise calculate
+  const membershipStatus = userMembership.status || (userMembership.is_active && now <= endDate ? "active" : "expired");
+  const isActive = membershipStatus === "active";
+  const isQueued = membershipStatus === "queued";
+  const isPending = membershipStatus === "pending";
+
   const daysRemaining = Math.ceil(
     (endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
   );
@@ -67,6 +77,12 @@ const MembershipCard = ({
     0,
     Math.min(100, (daysRemaining / membership.duration_days) * 100)
   );
+
+  // For queued memberships, calculate days until activation
+  const nextActivationDate = userMembership.nextActivationDate ? new Date(userMembership.nextActivationDate) : null;
+  const daysUntilActivation = nextActivationDate
+    ? Math.ceil((nextActivationDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+    : null;
 
   const handleCopyMembershidId = () => {
     navigator.clipboard.writeText(userMembership.id.toString());
@@ -120,10 +136,14 @@ const MembershipCard = ({
               className={`inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap ${
                 isActive
                   ? "bg-green-100 text-green-800"
+                  : isQueued
+                  ? "bg-blue-100 text-blue-800"
+                  : isPending
+                  ? "bg-yellow-100 text-yellow-800"
                   : "bg-gray-300 text-gray-700"
               }`}
             >
-              {isActive ? "🟢 ACTIVE" : "⚪ EXPIRED"}
+              {isActive ? "🟢 ACTIVE" : isQueued ? "🔵 QUEUED" : isPending ? "🟡 PENDING" : "⚪ EXPIRED"}
             </span>
             <span className="text-xs font-mono text-gray-500 truncate">
               ID: {membershipNumber}
@@ -184,6 +204,31 @@ const MembershipCard = ({
                     {daysRemaining}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">days remaining</p>
+                </div>
+              ) : isQueued ? (
+                <div>
+                  <p className="text-lg sm:text-2xl font-bold text-blue-600">
+                    {daysUntilActivation && daysUntilActivation > 0
+                      ? daysUntilActivation
+                      : "Soon"
+                    }
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {daysUntilActivation && daysUntilActivation > 0
+                      ? "days to activate"
+                      : "activates soon"
+                    }
+                  </p>
+                </div>
+              ) : isPending ? (
+                <div>
+                  <p className="text-lg sm:text-2xl font-bold text-yellow-600">Pending</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Starts {startDate.toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </p>
                 </div>
               ) : (
                 <div>
@@ -252,16 +297,16 @@ const MembershipCard = ({
             </div>
           </div>
 
-          {/* Benefits Section */}
-          {membership.benefits && (membership.benefits as any)?.list?.length > 0 && (
+          {/* Benefits & Add-ons Section */}
+          {membership.benefits && ((membership.benefits as any)?.list?.length > 0 || (membership.benefits as any)?.addons?.length > 0) && (
             <div className="mb-4 sm:mb-6">
               <button
                 onClick={() => setShowBenefits(!showBenefits)}
-                className="w-full flex items-center justify-between p-3 bg-white/50 rounded-lg transition-colors"
+                className="w-full flex items-center justify-between p-3 bg-white/50 rounded-lg transition-colors hover:bg-white/70"
               >
                 <span className="text-xs sm:text-sm font-semibold text-gray-900 flex items-center gap-2">
                   <Gift className="w-4 h-4" />
-                  Benefits & Perks
+                  {(membership.benefits as any)?.addons?.length > 0 ? "Membership Perks & Add-ons" : "Benefits & Perks"}
                 </span>
                 <span className={`transition-transform duration-300 ${showBenefits ? "rotate-180" : ""}`}>
                   ▼
@@ -270,22 +315,58 @@ const MembershipCard = ({
 
               {showBenefits && (
                 <div className="mt-3 p-3 sm:p-4 bg-white/40 rounded-lg backdrop-blur-sm">
-                  <ul className="space-y-2 sm:space-y-3">
-                    {(membership.benefits as any).list.map(
-                      (benefit: string, index: number) => (
-                        <li
-                          key={index}
-                          className="flex gap-3 items-start text-xs sm:text-sm text-gray-700"
-                        >
-                          <span
-                            className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
-                            style={{ backgroundColor: color }}
-                          />
-                          {benefit}
-                        </li>
-                      )
-                    )}
-                  </ul>
+                  {(membership.benefits as any)?.list?.length > 0 && (
+                    <div className="mb-3">
+                      <h4 className="text-xs font-semibold text-gray-700 uppercase mb-2">Benefits</h4>
+                      <ul className="space-y-2 sm:space-y-3">
+                        {(membership.benefits as any).list.map(
+                          (benefit: string, index: number) => (
+                            <li
+                              key={index}
+                              className="flex gap-3 items-start text-xs sm:text-sm text-gray-700"
+                            >
+                              <span
+                                className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
+                                style={{ backgroundColor: color }}
+                              />
+                              {benefit}
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    </div>
+                  )}
+
+                  {(membership.benefits as any)?.addons?.length > 0 && (
+                    <div>
+                      <h4 className="text-xs font-semibold text-gray-700 uppercase mb-2">Add-ons</h4>
+                      <ul className="space-y-2 sm:space-y-3">
+                        {(membership.benefits as any).addons.map(
+                          (addon: string | { name: string; description?: string }, index: number) => (
+                            <li
+                              key={index}
+                              className="flex gap-3 items-start text-xs sm:text-sm text-gray-700"
+                            >
+                              <span
+                                className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0"
+                                style={{ backgroundColor: color }}
+                              />
+                              <div>
+                                <div className="font-medium">
+                                  {typeof addon === "string" ? addon : addon.name}
+                                </div>
+                                {typeof addon !== "string" && addon.description && (
+                                  <div className="text-xs text-gray-600 mt-0.5">
+                                    {addon.description}
+                                  </div>
+                                )}
+                              </div>
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -318,7 +399,7 @@ const MembershipCard = ({
             {isActive && onRenew && (
               <Button
                 size="sm"
-                className="col-span-2 gap-1 sm:gap-2 text-xs sm:text-sm bg-gradient-to-r transition-all duration-300"
+                className="col-span-2 gap-1 sm:gap-2 text-xs sm:text-sm bg-gradient-to-r transition-all duration-300 text-black"
                 style={{
                   backgroundImage: `linear-gradient(135deg, ${color}, ${color}dd)`,
                 }}
@@ -329,10 +410,25 @@ const MembershipCard = ({
               </Button>
             )}
 
-            {!isActive && onRenew && (
+            {isQueued && (
               <Button
                 size="sm"
-                className="col-span-2 gap-1 sm:gap-2 text-xs sm:text-sm bg-gradient-to-r transition-all duration-300"
+                variant="outline"
+                disabled
+                className="col-span-2 gap-1 sm:gap-2 text-xs sm:text-sm"
+              >
+                <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                Queued for {nextActivationDate?.toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                })}
+              </Button>
+            )}
+
+            {!isActive && !isQueued && onRenew && (
+              <Button
+                size="sm"
+                className="col-span-2 gap-1 sm:gap-2 text-xs sm:text-sm bg-gradient-to-r transition-all duration-300 text-black"
                 style={{
                   backgroundImage: `linear-gradient(135deg, ${color}, ${color}dd)`,
                 }}
