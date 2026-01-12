@@ -412,20 +412,20 @@ export default function Orders() {
 
                           {/* Order Progress - Modern Progress Bar */}
                           {order.status !== "cancelled" && (
-                            <div className="space-y-4">
-                              <div className="flex items-center justify-between">
+                            <div className="space-y-3 sm:space-y-4">
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                                 <p className="text-sm font-semibold text-gray-900">
                                   Delivery Status
                                 </p>
-                                <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
+                                <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-full w-fit">
                                   {getOrderProgress(order)} of {orderSteps.length} steps
                                 </span>
                               </div>
 
                               {/* Progress Bar Container */}
-                              <div className="space-y-3">
+                              <div className="space-y-2 sm:space-y-3">
                                 {/* Main Progress Bar */}
-                                <div className="relative h-2 bg-gradient-to-r from-gray-100 to-gray-200 rounded-full overflow-hidden shadow-sm">
+                                <div className="relative h-1.5 sm:h-2 bg-gradient-to-r from-gray-100 to-gray-200 rounded-full overflow-hidden shadow-sm">
                                   {/* Animated Progress Fill */}
                                   <div
                                     className="h-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 rounded-full shadow-lg transition-all duration-700 ease-out"
@@ -446,7 +446,7 @@ export default function Orders() {
                                       return (
                                         <div
                                           key={step.status}
-                                          className={`w-4 h-4 rounded-full border-2 transition-all duration-500 ${
+                                          className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 transition-all duration-500 ${
                                             isCompleted || isCurrent
                                               ? "bg-blue-600 border-blue-700 scale-110 shadow-md"
                                               : "bg-white border-gray-300"
@@ -457,8 +457,8 @@ export default function Orders() {
                                   </div>
                                 </div>
 
-                                {/* Status Labels */}
-                                <div className="grid grid-cols-4 gap-2 mt-6">
+                                {/* Status Labels - Responsive Grid */}
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 mt-4 sm:mt-6">
                                   {orderSteps.map((step, index) => {
                                     const StepIcon = step.icon;
                                     const isCompleted = getOrderProgress(order) > index;
@@ -467,22 +467,22 @@ export default function Orders() {
                                     return (
                                       <div
                                         key={step.status}
-                                        className={`flex flex-col items-center p-3 rounded-lg transition-all duration-300 ${
+                                        className={`flex flex-col items-center p-2 sm:p-3 rounded-lg transition-all duration-300 ${
                                           isCompleted || isCurrent
-                                            ? "bg-blue-50 border-2 border-blue-200 scale-105"
+                                            ? "bg-blue-50 border-2 border-blue-200 sm:scale-105"
                                             : "bg-gray-50 border border-gray-200"
                                         }`}
                                       >
                                         <div
-                                          className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 transition-all duration-300 ${
+                                          className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center mb-1 sm:mb-2 transition-all duration-300 ${
                                             isCompleted || isCurrent
                                               ? "bg-blue-600 text-white shadow-md"
                                               : "bg-gray-200 text-gray-600"
                                           } ${isCurrent ? "animate-bounce" : ""}`}
                                         >
-                                          <StepIcon className="w-4 h-4" />
+                                          <StepIcon className="w-3 h-3 sm:w-4 sm:h-4" />
                                         </div>
-                                        <p className="text-xs font-medium text-center leading-tight">
+                                        <p className="text-[10px] sm:text-xs font-medium text-center leading-tight">
                                           <span
                                             className={
                                               isCompleted || isCurrent
@@ -494,12 +494,12 @@ export default function Orders() {
                                           </span>
                                         </p>
                                         {isCurrent && (
-                                          <span className="text-[10px] text-blue-600 font-semibold mt-1">
+                                          <span className="text-[8px] sm:text-[10px] text-blue-600 font-semibold mt-0.5 sm:mt-1">
                                             In Progress
                                           </span>
                                         )}
                                         {isCompleted && !isCurrent && (
-                                          <span className="text-[10px] text-green-600 font-semibold mt-1">
+                                          <span className="text-[8px] sm:text-[10px] text-green-600 font-semibold mt-0.5 sm:mt-1">
                                             ✓ Complete
                                           </span>
                                         )}
