@@ -8,9 +8,6 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
     allowedHosts: [".onrender.com", ".builderio.xyz"],
-    headers: {
-      "Content-Type": "text/css;charset=utf-8"  // 🔥 CSS MIME FIX
-    },
     hmr: process.env.VITE_HMR_HOST
       ? {
           host: process.env.VITE_HMR_HOST,
@@ -24,12 +21,10 @@ export default defineConfig(({ mode }) => ({
     sourcemap: false,
     minify: "terser",
     target: "esnext",
-    assetsInlineLimit: 0,           // 🔥 Force CSS files
+    // 🔥 MINIMAL RENDER CSS FIX (doesn't break Builder)
     rollupOptions: {
       output: {
-        assetFileNames: "assets/[name]-[hash][extname]",  // 🔥 Proper asset naming
-        chunkFileNames: "assets/[name]-[hash].js",
-        entryFileNames: "assets/[name]-[hash].js"
+        assetFileNames: "assets/[name]-[hash][extname]"
       }
     }
   },
@@ -37,9 +32,5 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: { "@": path.resolve(__dirname, "./src") }
   },
-  base: "/",
-  preview: {                        // 🔥 Render preview fix
-    port: 8080,
-    host: "::"
-  }
+  base: "/"  // Builder.io needs root base
 }));
