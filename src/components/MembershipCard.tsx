@@ -205,6 +205,28 @@ const MembershipCard = ({
                   </p>
                   <p className="text-xs text-gray-500 mt-1">days remaining</p>
                 </div>
+              ) : isQueued ? (
+                <div>
+                  <p className="text-lg sm:text-2xl font-bold text-blue-600">
+                    Queue #{userMembership.queuePosition || "?"}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {daysUntilActivation && daysUntilActivation > 0
+                      ? `Activates in ${daysUntilActivation} days`
+                      : "Will activate soon"
+                    }
+                  </p>
+                </div>
+              ) : isPending ? (
+                <div>
+                  <p className="text-lg sm:text-2xl font-bold text-yellow-600">Pending</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Starts {startDate.toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </p>
+                </div>
               ) : (
                 <div>
                   <p className="text-lg sm:text-2xl font-bold text-gray-400">Expired</p>
