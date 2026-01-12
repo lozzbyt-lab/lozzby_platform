@@ -410,40 +410,103 @@ export default function Orders() {
                             </div>
                           </div>
 
-                          {/* Order Progress */}
+                          {/* Order Progress - Modern Progress Bar */}
                           {order.status !== "cancelled" && (
-                            <div className="space-y-3">
-                              <p className="text-sm font-semibold text-gray-900">
-                                Delivery Status
-                              </p>
+                            <div className="space-y-4">
                               <div className="flex items-center justify-between">
-                                {orderSteps.map((step, index) => {
-                                  const StepIcon = step.icon;
-                                  const isCompleted =
-                                    getOrderProgress(order) > index;
-                                  const isCurrent =
-                                    getOrderProgress(order) === index + 1;
+                                <p className="text-sm font-semibold text-gray-900">
+                                  Delivery Status
+                                </p>
+                                <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
+                                  {getOrderProgress(order)} of {orderSteps.length} steps
+                                </span>
+                              </div>
 
-                                  return (
-                                    <div
-                                      key={step.status}
-                                      className="flex flex-col items-center flex-1"
-                                    >
+                              {/* Progress Bar Container */}
+                              <div className="space-y-3">
+                                {/* Main Progress Bar */}
+                                <div className="relative h-2 bg-gradient-to-r from-gray-100 to-gray-200 rounded-full overflow-hidden shadow-sm">
+                                  {/* Animated Progress Fill */}
+                                  <div
+                                    className="h-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 rounded-full shadow-lg transition-all duration-700 ease-out"
+                                    style={{
+                                      width: `${(getOrderProgress(order) / orderSteps.length) * 100}%`,
+                                    }}
+                                  >
+                                    {/* Shimmer Effect */}
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-pulse" />
+                                  </div>
+
+                                  {/* Progress Dots */}
+                                  <div className="absolute top-1/2 w-full flex justify-between -translate-y-1/2">
+                                    {orderSteps.map((step, index) => {
+                                      const isCompleted = getOrderProgress(order) > index;
+                                      const isCurrent = getOrderProgress(order) === index + 1;
+
+                                      return (
+                                        <div
+                                          key={step.status}
+                                          className={`w-4 h-4 rounded-full border-2 transition-all duration-500 ${
+                                            isCompleted || isCurrent
+                                              ? "bg-blue-600 border-blue-700 scale-110 shadow-md"
+                                              : "bg-white border-gray-300"
+                                          } ${isCurrent ? "animate-pulse" : ""}`}
+                                        />
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+
+                                {/* Status Labels */}
+                                <div className="grid grid-cols-4 gap-2 mt-6">
+                                  {orderSteps.map((step, index) => {
+                                    const StepIcon = step.icon;
+                                    const isCompleted = getOrderProgress(order) > index;
+                                    const isCurrent = getOrderProgress(order) === index + 1;
+
+                                    return (
                                       <div
-                                        className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
+                                        key={step.status}
+                                        className={`flex flex-col items-center p-3 rounded-lg transition-all duration-300 ${
                                           isCompleted || isCurrent
-                                            ? "bg-blue-600 text-white"
-                                            : "bg-gray-200 text-gray-600"
+                                            ? "bg-blue-50 border-2 border-blue-200 scale-105"
+                                            : "bg-gray-50 border border-gray-200"
                                         }`}
                                       >
-                                        <StepIcon className="w-5 h-5" />
+                                        <div
+                                          className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 transition-all duration-300 ${
+                                            isCompleted || isCurrent
+                                              ? "bg-blue-600 text-white shadow-md"
+                                              : "bg-gray-200 text-gray-600"
+                                          } ${isCurrent ? "animate-bounce" : ""}`}
+                                        >
+                                          <StepIcon className="w-4 h-4" />
+                                        </div>
+                                        <p className="text-xs font-medium text-center leading-tight">
+                                          <span
+                                            className={
+                                              isCompleted || isCurrent
+                                                ? "text-blue-700"
+                                                : "text-gray-600"
+                                            }
+                                          >
+                                            {step.label}
+                                          </span>
+                                        </p>
+                                        {isCurrent && (
+                                          <span className="text-[10px] text-blue-600 font-semibold mt-1">
+                                            In Progress
+                                          </span>
+                                        )}
+                                        {isCompleted && !isCurrent && (
+                                          <span className="text-[10px] text-green-600 font-semibold mt-1">
+                                            ✓ Complete
+                                          </span>
+                                        )}
                                       </div>
-                                      <p className="text-xs font-medium text-gray-600 text-center">
-                                        {step.label}
-                                      </p>
-                                    </div>
-                                  );
-                                })}
+                                    );
+                                  })}
+                                </div>
                               </div>
                             </div>
                           )}
