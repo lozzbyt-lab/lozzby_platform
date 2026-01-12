@@ -581,23 +581,34 @@ export default function Orders() {
         </div>
       </div>
 
-      {/* Order Details Modal */}
+      {/* Order Details Modal - Full Height */}
       {selectedOrder && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={() => setSelectedOrder(null)}
         >
-          <Card className="w-full max-w-2xl max-h-96 overflow-y-auto">
-            <CardHeader className="flex items-center justify-between border-b">
-              <CardTitle>Order Details #{selectedOrder.order_number}</CardTitle>
+          <div
+            className="w-full h-full md:h-[95vh] md:w-[90%] md:rounded-lg flex flex-col bg-white"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b p-6 bg-gradient-to-r from-blue-50 to-indigo-50 sticky top-0 z-10">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Order Details #{selectedOrder.order_number}
+                </h2>
+                <p className="text-sm text-gray-600 mt-1">
+                  {selectedOrder.status && `Status: ${selectedOrder.status.charAt(0).toUpperCase() + selectedOrder.status.slice(1)}`}
+                </p>
+              </div>
               <button
                 onClick={() => setSelectedOrder(null)}
-                className="text-gray-600 hover:text-gray-900"
+                className="text-gray-600 hover:text-gray-900 text-3xl font-light leading-none hover:bg-gray-100 rounded-full w-10 h-10 flex items-center justify-center transition-colors"
               >
                 ✕
               </button>
-            </CardHeader>
-            <CardContent className="pt-6 space-y-6">
+            </div>
+            <div className="flex-1 overflow-y-auto">
+              <CardContent className="pt-8 space-y-8 pb-8 max-w-4xl">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-xs text-gray-600">Order Date</p>
@@ -663,8 +674,9 @@ export default function Orders() {
                   </p>
                 </div>
               )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </div>
+          </div>
         </div>
       )}
     </Layout>
