@@ -294,16 +294,16 @@ const MembershipCard = ({
             </div>
           </div>
 
-          {/* Benefits Section */}
-          {membership.benefits && (membership.benefits as any)?.list?.length > 0 && (
+          {/* Benefits & Add-ons Section */}
+          {membership.benefits && ((membership.benefits as any)?.list?.length > 0 || (membership.benefits as any)?.addons?.length > 0) && (
             <div className="mb-4 sm:mb-6">
               <button
                 onClick={() => setShowBenefits(!showBenefits)}
-                className="w-full flex items-center justify-between p-3 bg-white/50 rounded-lg transition-colors"
+                className="w-full flex items-center justify-between p-3 bg-white/50 rounded-lg transition-colors hover:bg-white/70"
               >
                 <span className="text-xs sm:text-sm font-semibold text-gray-900 flex items-center gap-2">
                   <Gift className="w-4 h-4" />
-                  Benefits & Perks
+                  {(membership.benefits as any)?.addons?.length > 0 ? "Membership Perks & Add-ons" : "Benefits & Perks"}
                 </span>
                 <span className={`transition-transform duration-300 ${showBenefits ? "rotate-180" : ""}`}>
                   ▼
@@ -312,22 +312,58 @@ const MembershipCard = ({
 
               {showBenefits && (
                 <div className="mt-3 p-3 sm:p-4 bg-white/40 rounded-lg backdrop-blur-sm">
-                  <ul className="space-y-2 sm:space-y-3">
-                    {(membership.benefits as any).list.map(
-                      (benefit: string, index: number) => (
-                        <li
-                          key={index}
-                          className="flex gap-3 items-start text-xs sm:text-sm text-gray-700"
-                        >
-                          <span
-                            className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
-                            style={{ backgroundColor: color }}
-                          />
-                          {benefit}
-                        </li>
-                      )
-                    )}
-                  </ul>
+                  {(membership.benefits as any)?.list?.length > 0 && (
+                    <div className="mb-3">
+                      <h4 className="text-xs font-semibold text-gray-700 uppercase mb-2">Benefits</h4>
+                      <ul className="space-y-2 sm:space-y-3">
+                        {(membership.benefits as any).list.map(
+                          (benefit: string, index: number) => (
+                            <li
+                              key={index}
+                              className="flex gap-3 items-start text-xs sm:text-sm text-gray-700"
+                            >
+                              <span
+                                className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
+                                style={{ backgroundColor: color }}
+                              />
+                              {benefit}
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    </div>
+                  )}
+
+                  {(membership.benefits as any)?.addons?.length > 0 && (
+                    <div>
+                      <h4 className="text-xs font-semibold text-gray-700 uppercase mb-2">Add-ons</h4>
+                      <ul className="space-y-2 sm:space-y-3">
+                        {(membership.benefits as any).addons.map(
+                          (addon: string | { name: string; description?: string }, index: number) => (
+                            <li
+                              key={index}
+                              className="flex gap-3 items-start text-xs sm:text-sm text-gray-700"
+                            >
+                              <span
+                                className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0"
+                                style={{ backgroundColor: color }}
+                              />
+                              <div>
+                                <div className="font-medium">
+                                  {typeof addon === "string" ? addon : addon.name}
+                                </div>
+                                {typeof addon !== "string" && addon.description && (
+                                  <div className="text-xs text-gray-600 mt-0.5">
+                                    {addon.description}
+                                  </div>
+                                )}
+                              </div>
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
