@@ -28,7 +28,7 @@ export default defineConfig(({ mode }) => ({
       }
     }
   },
-  plugins: [react(), mode === "production" ? null : componentTagger()].filter(Boolean),
+  plugins: [react()],
   resolve: {
     alias: { "@": path.resolve(__dirname, "./src") }
   },
