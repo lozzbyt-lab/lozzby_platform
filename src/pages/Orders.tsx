@@ -88,6 +88,26 @@ export default function Orders() {
     );
   }
 
+  const getMembershipIcon = (iconName: string | null) => {
+    const iconClass = "w-6 h-6";
+    switch (iconName) {
+      case "Crown":
+        return <Crown className={iconClass} />;
+      case "Zap":
+        return <Zap className={iconClass} />;
+      case "Gift":
+        return <Gift className={iconClass} />;
+      case "Trophy":
+        return <Trophy className={iconClass} />;
+      case "Star":
+        return <Star className={iconClass} />;
+      case "Flame":
+        return <Flame className={iconClass} />;
+      default:
+        return <Crown className={iconClass} />;
+    }
+  };
+
   const getStatusIcon = (status: string) => {
     const iconClass = "w-5 h-5";
     switch (status) {
