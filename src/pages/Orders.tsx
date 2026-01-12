@@ -588,7 +588,7 @@ export default function Orders() {
           onClick={() => setSelectedOrder(null)}
         >
           <div
-            className="w-full h-full md:h-[95vh] md:w-[90%] md:rounded-lg flex flex-col bg-white"
+            className="w-full h-full sm:h-[95vh] sm:w-[92%] md:w-[80%] lg:w-[75%] sm:rounded-lg flex flex-col bg-white mx-auto sm:mx-0"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b p-6 bg-gradient-to-r from-blue-50 to-indigo-50 sticky top-0 z-10">
