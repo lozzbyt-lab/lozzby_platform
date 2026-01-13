@@ -4,23 +4,15 @@ import path from "path";
 
 export default defineConfig(({ mode }) => ({
   server: {
-    host: "::",
-    port: 8080,
-    allowedHosts: [".onrender.com", ".builderio.xyz"],
-    hmr: process.env.VITE_HMR_HOST
-      ? {
-          host: process.env.VITE_HMR_HOST,
-          protocol: process.env.VITE_HMR_PROTOCOL || "wss",
-          port: process.env.VITE_HMR_PORT ? parseInt(process.env.VITE_HMR_PORT) : 443,
-        }
-      : undefined,
+    port: 3000,
+    host: '0.0.0.0',
+    allowedHosts: true
   },
   build: {
-    outDir: "dist",
+    outDir: 'build',
     sourcemap: false,
     minify: "terser",
     target: "esnext",
-    // 🔥 MINIMAL RENDER CSS FIX (doesn't break Builder)
     rollupOptions: {
       output: {
         assetFileNames: "assets/[name]-[hash][extname]"
@@ -31,5 +23,5 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: { "@": path.resolve(__dirname, "./src") }
   },
-  base: "/"  // Builder.io needs root base
+  base: "/"
 }));
