@@ -341,21 +341,38 @@ export default function AdminSubscribers() {
                           {/* Status Badge */}
                           <td className="py-4 px-4">
                             <div className="flex items-center gap-2">
-                              {isActive ? (
-                                <>
-                                  <CheckCircle className="w-4 h-4 text-green-600" />
-                                  <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    Active
-                                  </span>
-                                </>
-                              ) : (
-                                <>
-                                  <AlertCircle className="w-4 h-4 text-red-600" />
-                                  <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                    Expired
-                                  </span>
-                                </>
-                              )}
+                              {(() => {
+                                const status = getSubscriptionStatus(subscriber);
+                                switch (status) {
+                                  case "queued":
+                                    return (
+                                      <>
+                                        <Clock className="w-4 h-4 text-blue-600" />
+                                        <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                          Queued
+                                        </span>
+                                      </>
+                                    );
+                                  case "active":
+                                    return (
+                                      <>
+                                        <CheckCircle className="w-4 h-4 text-green-600" />
+                                        <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                          Active
+                                        </span>
+                                      </>
+                                    );
+                                  case "expired":
+                                    return (
+                                      <>
+                                        <AlertCircle className="w-4 h-4 text-red-600" />
+                                        <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                          Expired
+                                        </span>
+                                      </>
+                                    );
+                                }
+                              })()}
                             </div>
                           </td>
 
