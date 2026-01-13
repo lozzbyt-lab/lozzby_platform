@@ -9,15 +9,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        default: "bg-red-600 text-white hover:bg-red-700",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-        hero: "bg-accent text-accent-foreground font-bold hover:brightness-110 hover:scale-105 shadow-lg",
-        heroOutline: "border-2 border-accent text-accent bg-transparent hover:bg-accent hover:text-accent-foreground font-bold",
-        gold: "bg-gradient-to-r from-[hsl(45,100%,45%)] to-[hsl(38,100%,55%)] text-[hsl(220,70%,15%)] font-bold hover:brightness-110 shadow-md",
+        outline: "border border-white/20 bg-transparent text-white hover:bg-white/5 hover:border-red-500",
+        secondary: "bg-gray-800 text-white hover:bg-gray-700",
+        ghost: "hover:bg-white/5 hover:text-red-500",
+        link: "text-red-500 underline-offset-4 hover:underline",
+        hero: "bg-red-600 text-white font-bold hover:bg-red-700 hover:scale-105 shadow-lg shadow-red-600/20",
+        heroOutline: "border-2 border-red-600 text-red-500 bg-transparent hover:bg-red-600 hover:text-white font-bold",
+        gold: "bg-gradient-to-r from-red-600 to-red-500 text-white font-bold hover:brightness-110 shadow-md shadow-red-600/20",
       },
       size: {
         default: "h-10 px-4 py-2",
