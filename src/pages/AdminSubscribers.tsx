@@ -80,18 +80,34 @@ export default function AdminSubscribers() {
     }
   };
 
+  const getSubscriptionStatus = (
+    subscriber: Subscriber
+  ): "queued" | "active" | "expired" => {
+    const now = new Date();
+    const startDate = new Date(subscriber.start_date);
+    const endDate = new Date(subscriber.end_date);
+
+    // Queued: start date is in the future
+    if (startDate > now) {
+      return "queued";
+    }
+    // Active: start date is in the past and end date is in the future
+    else if (endDate > now) {
+      return "active";
+    }
+    // Expired: end date is in the past or today
+    else {
+      return "expired";
+    }
+  };
+
   const filterSubscribers = () => {
     let filtered = [...subscribers];
 
     // Apply status filter
-    const now = new Date();
-    if (statusFilter === "active") {
+    if (statusFilter !== "all") {
       filtered = filtered.filter(
-        (sub) => sub.is_active && new Date(sub.end_date) > now
-      );
-    } else if (statusFilter === "expired") {
-      filtered = filtered.filter(
-        (sub) => !sub.is_active || new Date(sub.end_date) <= now
+        (sub) => getSubscriptionStatus(sub) === statusFilter
       );
     }
 
